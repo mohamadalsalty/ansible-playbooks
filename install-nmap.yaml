@@ -1,0 +1,22 @@
+---
+- name: Install nmap if not found
+  hosts: localhost
+  become: yes # run as root
+
+  tasks:
+    - name: Check if nmap is installed
+      command: nmap --version
+      ignore_errors: yes
+      register: nmap_version
+
+    - name: Display Nmap version
+      debug:
+        var: nmap_version.stdout
+      when: nmap_version.rc == 0 # Only install if nmap is not found
+
+    - name: Install nmap
+      apt:
+        name: nmap
+        state: present
+      when: nmap_version.rc != 0 # Only install if nmap is not found
+
