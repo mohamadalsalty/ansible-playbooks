@@ -1,0 +1,11 @@
+---
+- name: Check if Docker is running
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: Ensure the Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
